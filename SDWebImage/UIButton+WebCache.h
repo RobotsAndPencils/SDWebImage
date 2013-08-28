@@ -94,6 +94,23 @@
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletedBlock)completedBlock;
 
 /**
+ * Set the imageView `image` with an `url`, placeholder, custom options, and option to match screen scale.
+ *
+ * The downloand is asynchronous and cached.
+ *
+ * @param url The url for the image.
+ * @param state The state that uses the specified title. The values are described in UIControlState.
+ * @param placeholder The image to be set initially, until the image request finishes.
+ * @param options The options to use when downloading the image. @see SDWebImageOptions for the possible values.
+ * @param useScreenScale YES if the image's scale should match the UIScreen scale. NO if it should be set to use the default.
+ * @param completedBlock A block called when operation has been completed. This block as no return value
+ *                       and takes the requested UIImage as first parameter. In case of error the image parameter
+ *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
+ *                       indicating if the image was retrived from the local cache of from the network.
+ */
+- (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options useScreenScale:(BOOL)useScreenScale completed:(SDWebImageCompletedBlock)completedBlock;
+
+/**
  * Set the backgroundImageView `image` with an `url`.
  *
  * The downloand is asynchronous and cached.
@@ -164,6 +181,20 @@
  * @param failure A block object to be executed when the image request failed. This block has no return value and takes the error object describing the network or parsing error that occurred (may be nil).
  */
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletedBlock)completedBlock;
+
+/**
+ * Set the backgroundImageView `image` with an `url`, placeholder, custom options, and option to match screen scale.
+ *
+ * The downloand is asynchronous and cached.
+ *
+ * @param url The url for the image.
+ * @param placeholder The image to be set initially, until the image request finishes.
+ * @param options The options to use when downloading the image. @see SDWebImageOptions for the possible values.
+ * @param useScreenScale YES if the image's scale should match the UIScreen scale. NO if it should be set to use the default.
+ * @param success A block to be executed when the image request succeed This block has no return value and takes the retrieved image as argument.
+ * @param failure A block object to be executed when the image request failed. This block has no return value and takes the error object describing the network or parsing error that occurred (may be nil).
+ */
+- (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options useScreenScale:(BOOL)useScreenScale completed:(SDWebImageCompletedBlock)completedBlock;
 
 /**
  * Cancel the current download

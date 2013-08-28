@@ -8,6 +8,7 @@
 
 #import "UIButton+WebCache.h"
 #import "objc/runtime.h"
+#import "UIImage+SDRescaleImage.h"
 
 static char operationKey;
 
@@ -15,29 +16,34 @@ static char operationKey;
 
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state
 {
-    [self setImageWithURL:url forState:state placeholderImage:nil options:0 completed:nil];
+    [self setImageWithURL:url forState:state placeholderImage:nil options:0 useScreenScale:NO completed:nil];
 }
 
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder
 {
-    [self setImageWithURL:url forState:state placeholderImage:placeholder options:0 completed:nil];
+    [self setImageWithURL:url forState:state placeholderImage:placeholder options:0 useScreenScale:NO completed:nil];
 }
 
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options
 {
-    [self setImageWithURL:url forState:state placeholderImage:placeholder options:options completed:nil];
+    [self setImageWithURL:url forState:state placeholderImage:placeholder options:options useScreenScale:NO completed:nil];
 }
 
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state completed:(SDWebImageCompletedBlock)completedBlock
 {
-    [self setImageWithURL:url forState:state placeholderImage:nil options:0 completed:completedBlock];
+    [self setImageWithURL:url forState:state placeholderImage:nil options:0 useScreenScale:NO completed:completedBlock];
 }
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder completed:(SDWebImageCompletedBlock)completedBlock
 {
-    [self setImageWithURL:url forState:state placeholderImage:placeholder options:0 completed:completedBlock];
+    [self setImageWithURL:url forState:state placeholderImage:placeholder options:0 useScreenScale:NO completed:completedBlock];
 }
 
 - (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletedBlock)completedBlock
+{
+    [self setImageWithURL:url forState:state placeholderImage:placeholder options:options useScreenScale:NO completed:completedBlock];
+}
+
+- (void)setImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options useScreenScale:(BOOL)useScreenScale completed:(SDWebImageCompletedBlock)completedBlock
 {
     [self cancelCurrentImageLoad];
 
@@ -52,6 +58,9 @@ static char operationKey;
             if (!sself) return;
             if (image)
             {
+                if ( useScreenScale && [[UIScreen mainScreen] scale] != image.scale ) {
+                    image = [image rescaledImageToMatchScreenScale];
+                }
                 [sself setImage:image forState:state];
             }
             if (completedBlock && finished)
@@ -65,30 +74,35 @@ static char operationKey;
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state
 {
-    [self setBackgroundImageWithURL:url forState:state placeholderImage:nil options:0 completed:nil];
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:nil options:0 useScreenScale:NO completed:nil];
 }
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder
 {
-    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:0 completed:nil];
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:0 useScreenScale:NO completed:nil];
 }
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options
 {
-    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:options completed:nil];
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:options useScreenScale:NO completed:nil];
 }
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state completed:(SDWebImageCompletedBlock)completedBlock
 {
-    [self setBackgroundImageWithURL:url forState:state placeholderImage:nil options:0 completed:completedBlock];
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:nil options:0 useScreenScale:NO completed:completedBlock];
 }
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder completed:(SDWebImageCompletedBlock)completedBlock
 {
-    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:0 completed:completedBlock];
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:0 useScreenScale:NO completed:completedBlock];
 }
 
 - (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletedBlock)completedBlock
+{
+    [self setBackgroundImageWithURL:url forState:state placeholderImage:placeholder options:options useScreenScale:NO completed:completedBlock];
+}
+
+- (void)setBackgroundImageWithURL:(NSURL *)url forState:(UIControlState)state placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options useScreenScale:(BOOL)useScreenScale completed:(SDWebImageCompletedBlock)completedBlock
 {
     [self cancelCurrentImageLoad];
 
@@ -103,6 +117,9 @@ static char operationKey;
             if (!sself) return;
             if (image)
             {
+                if ( useScreenScale && [[UIScreen mainScreen] scale] != image.scale ) {
+                    image = [image rescaledImageToMatchScreenScale];
+                }
                 [sself setBackgroundImage:image forState:state];
             }
             if (completedBlock && finished)
